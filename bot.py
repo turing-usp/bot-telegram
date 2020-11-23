@@ -48,10 +48,6 @@ def send_ds_describe(update, context):
 def send_welcome(update, context):
     update.message.reply_text("Salve, Salve Grupo Turing!")
 
-def echo(update, context):
-    """Echo the user message."""
-    update.message.reply_text(update.message.text)
-
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
@@ -99,9 +95,6 @@ def main():
 
     dp.add_handler(CommandHandler("gpt2", gpt2_reply))
     dp.add_handler(CommandHandler("qa", turing_qa))
-
-
-    dp.add_handler(MessageHandler(Filters.text, echo))
 
     dp.add_error_handler(error)
 
