@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 # /help
 def send_help(update, context):
-    update.message.reply_text("Comandos: /quant; /nlp; /cv; /rl; /ds; /gpt2; /qa")
+    update.message.reply_text("Comandos: /spotted; /quant; /nlp; /cv; /rl; /ds; /gpt2; /qa")
 
 # Descrição das Areas de foco
 
@@ -46,7 +46,20 @@ def send_ds_describe(update, context):
 
 # /start
 def send_welcome(update, context):
-    update.message.reply_text("Salve, Salve Grupo Turing!")
+    update.message.reply_text("Salve, Salve Grupo Turing!\nDigite /help para ver os meus comandos disponíveis.")
+
+# /spotted
+CHAT_ID = os.environ['SPOTTED_CHAT_ID']
+URL = "https://api.telegram.org/bot{}/".format(TOKEN)
+
+def send_spotted_describe(update, context):
+    spotted = update.message.text
+    send_message(spotted)
+    update.message.reply_text("Spotted enviado com sucesso!")
+
+def send_message(text, chat_id = CHAT_ID):
+    url = URL + "sendMessage?text={}&chat_id={}&parse_mode=Markdown".format(text, chat_id)
+    requests.get(url)
 
 def error(update, context):
     """Log Errors caused by Updates."""
@@ -92,6 +105,7 @@ def main():
     dp.add_handler(CommandHandler("ds", send_ds_describe))
     dp.add_handler(CommandHandler("cv", send_cv_describe))
     dp.add_handler(CommandHandler("rl", send_rl_describe))
+    dp.add_handler(CommandHandler("spotted", send_spotted_describe))
 
     dp.add_handler(CommandHandler("gpt2", gpt2_reply))
     dp.add_handler(CommandHandler("qa", turing_qa))
